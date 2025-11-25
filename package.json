@@ -5,7 +5,8 @@
   "main": "main.js",
   "scripts": {
     "start": "electron .",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "screenshots": "node scripts/screenshot.js"
   },
   "keywords": [
     "rss",
@@ -14,11 +15,12 @@
     "mac"
   ],
   "author": "",
-  "license": "ISC",
+  "license": "MIT",
   "dependencies": {
     "rss-parser": "^3.13.0"
   },
   "devDependencies": {
-    "electron": "^35.7.5"
+    "electron": "^35.7.5",
+    "playwright": "^1.57.0"
   }
 }
