@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline'">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline'">
   <title>Feed Management - RSS Reader</title>
   <style>
     * {
@@ -751,8 +751,20 @@
     const exportOpmlBtn = document.getElementById('exportOpmlBtn');
 
     // Navigation
-    backToReaderBtn.addEventListener('click', () => {
-      window.location.href = 'index.html';
+    backToReaderBtn.addEventListener('click', async () => {
+      console.log('Back button clicked');
+      if (window.electronAPI && window.electronAPI.navigateTo) {
+        try {
+          await window.electronAPI.navigateTo('index.html');
+          console.log('Navigation successful');
+        } catch (error) {
+          console.error('Navigation error:', error);
+        }
+      } else {
+        console.log('Using fallback navigation');
+        // Fallback for testing in browser
+        window.location.href = 'index.html';
+      }
     });
 
     // Add Feed Modal

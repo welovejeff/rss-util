@@ -1,8 +1,10 @@
-const { app, BrowserWindow } = require('electron');
+const { app, BrowserWindow, ipcMain } = require('electron');
 const path = require('path');
 
+let mainWindow;
+
 function createWindow() {
-  const mainWindow = new BrowserWindow({
+  mainWindow = new BrowserWindow({
     width: 1200,
     height: 800,
     webPreferences: {
@@ -15,6 +17,17 @@ function createWindow() {
 
   mainWindow.loadFile('index.html');
 }
+
+// Handle navigation requests from renderer
+ipcMain.handle('navigate-to', (event, file) => {
+  // Get the window that sent the request
+  const window = BrowserWindow.fromWebContents(event.sender);
+  if (window && !window.isDestroyed()) {
+    window.loadFile(file);
+    return { success: true };
+  }
+  return { success: false, error: 'Window not found' };
+});
 
 app.whenReady().then(() => {
   createWindow();
