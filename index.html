@@ -274,6 +274,101 @@
       font-size: 16px;
     }
 
+    /* Update Notification */
+    .update-notification {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      background-color: #3498db;
+      color: white;
+      padding: 12px 20px;
+      display: none;
+      align-items: center;
+      justify-content: space-between;
+      z-index: 1000;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+    }
+
+    .update-notification.visible {
+      display: flex;
+    }
+
+    .update-notification.downloading {
+      background-color: #2ecc71;
+    }
+
+    .update-notification.error {
+      background-color: #e74c3c;
+    }
+
+    .update-notification-content {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .update-notification-text {
+      flex: 1;
+    }
+
+    .update-notification-actions {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .update-progress {
+      width: 200px;
+      height: 6px;
+      background-color: rgba(255,255,255,0.3);
+      border-radius: 3px;
+      overflow: hidden;
+    }
+
+    .update-progress-bar {
+      height: 100%;
+      background-color: white;
+      transition: width 0.3s;
+      width: 0%;
+    }
+
+    .update-btn {
+      background-color: rgba(255,255,255,0.2);
+      border: 1px solid rgba(255,255,255,0.3);
+      color: white;
+      padding: 6px 12px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 13px;
+      transition: background-color 0.2s;
+    }
+
+    .update-btn:hover {
+      background-color: rgba(255,255,255,0.3);
+    }
+
+    .update-close {
+      background: none;
+      border: none;
+      color: white;
+      font-size: 20px;
+      cursor: pointer;
+      padding: 0;
+      width: 24px;
+      height: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0.8;
+    }
+
+    .update-close:hover {
+      opacity: 1;
+    }
+
+    /* Image Toggle Button */
     .image-toggle-btn {
       background: none;
       border: none;
@@ -312,6 +407,7 @@
       display: none !important;
     }
 
+    /* Toast Notifications */
     .toast-container {
       position: fixed;
       bottom: 20px;
@@ -338,10 +434,175 @@
       opacity: 1;
       transform: translateY(0);
     }
+
+    /* About Button */
+    .sidebar-footer {
+      padding: 15px 20px;
+      border-top: 1px solid #1a252f;
+      margin-top: auto;
+    }
+
+    .about-btn {
+      width: 100%;
+      background: none;
+      border: 1px solid rgba(255,255,255,0.2);
+      color: rgba(255,255,255,0.8);
+      font-size: 13px;
+      padding: 10px 15px;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: all 0.2s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    .about-btn:hover {
+      background-color: rgba(255,255,255,0.1);
+      border-color: rgba(255,255,255,0.3);
+      color: white;
+    }
+
+    /* Modal Styles */
+    .modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: rgba(0, 0, 0, 0.5);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 2000;
+    }
+
+    .modal-overlay.hidden {
+      display: none;
+    }
+
+    .modal {
+      background-color: white;
+      border-radius: 12px;
+      width: 480px;
+      max-width: 90%;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+    }
+
+    .modal-header {
+      padding: 20px 24px;
+      border-bottom: 1px solid #eee;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .modal-title {
+      font-size: 18px;
+      font-weight: 600;
+      color: #2c3e50;
+    }
+
+    .modal-close {
+      background: none;
+      border: none;
+      font-size: 24px;
+      color: #7f8c8d;
+      cursor: pointer;
+      line-height: 1;
+      padding: 0;
+      width: 28px;
+      height: 28px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .modal-close:hover {
+      color: #2c3e50;
+    }
+
+    .modal-body {
+      padding: 24px;
+    }
+
+    .about-info {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .about-info-item {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .about-info-label {
+      font-size: 12px;
+      text-transform: uppercase;
+      color: #95a5a6;
+      letter-spacing: 0.5px;
+      font-weight: 600;
+    }
+
+    .about-info-value {
+      font-size: 15px;
+      color: #2c3e50;
+    }
+
+    .about-info-value a {
+      color: #3498db;
+      text-decoration: none;
+    }
+
+    .about-info-value a:hover {
+      text-decoration: underline;
+    }
+
+    .modal-footer {
+      padding: 16px 24px;
+      border-top: 1px solid #eee;
+      display: flex;
+      justify-content: flex-end;
+    }
+
+    .btn {
+      padding: 8px 16px;
+      border-radius: 6px;
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s;
+      border: none;
+    }
+
+    .btn-secondary {
+      background-color: #ecf0f1;
+      color: #2c3e50;
+    }
+
+    .btn-secondary:hover {
+      background-color: #d5dbdb;
+    }
   </style>
 </head>
 
 <body>
+  <!-- Update Notification Banner -->
+  <div class="update-notification" id="updateNotification">
+    <div class="update-notification-content">
+      <span id="updateNotificationText">Update available</span>
+      <div class="update-progress" id="updateProgress" style="display: none;">
+        <div class="update-progress-bar" id="updateProgressBar"></div>
+      </div>
+    </div>
+    <div class="update-notification-actions">
+      <button class="update-btn" id="updateInstallBtn" style="display: none;">Install & Restart</button>
+      <button class="update-close" id="updateCloseBtn">&times;</button>
+    </div>
+  </div>
   <aside class="sidebar">
     <div class="sidebar-header">
       <span>RSS Reader</span>
@@ -356,6 +617,12 @@
       <ul class="feed-list" id="folderList">
         <!-- Categories will be dynamically rendered here -->
       </ul>
+    </div>
+    <div class="sidebar-footer">
+      <button class="about-btn" id="aboutBtn">
+        <span>ℹ️</span>
+        <span>About</span>
+      </button>
     </div>
   </aside>
 
@@ -378,6 +645,24 @@
 
   <div class="toast-container" id="toastContainer"></div>
 
+  <!-- About Modal -->
+  <div class="modal-overlay hidden" id="aboutModal">
+    <div class="modal">
+      <div class="modal-header">
+        <h3 class="modal-title">About RSS Reader</h3>
+        <button class="modal-close" id="closeAboutModal">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div class="about-info" id="aboutInfo">
+          <!-- Will be populated by JavaScript -->
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" id="closeAboutBtn">Close</button>
+      </div>
+    </div>
+  </div>
+
   <script>
     // Application State
     let feeds = [];
@@ -399,6 +684,11 @@
     const manageBtn = document.getElementById('manageFeeds');
     const toggleImagesBtn = document.getElementById('toggleImagesBtn');
     const toastContainer = document.getElementById('toastContainer');
+    const aboutBtn = document.getElementById('aboutBtn');
+    const aboutModal = document.getElementById('aboutModal');
+    const closeAboutModalBtn = document.getElementById('closeAboutModal');
+    const closeAboutBtn = document.getElementById('closeAboutBtn');
+    const aboutInfo = document.getElementById('aboutInfo');
 
     // Helper Functions
     function generateUUID() {
@@ -774,6 +1064,14 @@
       // Ignore if user is typing in an input or textarea
       if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
 
+      // Escape key - close about modal if open
+      if (e.key === 'Escape') {
+        if (!aboutModal.classList.contains('hidden')) {
+          closeAboutModal();
+          return;
+        }
+      }
+
       if (e.key === 'r') {
         const originalTitle = toolbarTitle.textContent;
         toolbarTitle.textContent = 'Refreshing...';
@@ -864,6 +1162,7 @@
       }
     });
 
+    // Image Toggle and Toast Functions
     toggleImagesBtn.addEventListener('click', () => {
       showImages = !showImages;
       updateImageToggleUI();
@@ -900,6 +1199,159 @@
       }, duration);
     }
 
+    // About Modal Functions
+    async function openAboutModal() {
+      try {
+        // Get app version
+        let appVersion = 'Unknown';
+        if (window.electronAPI && window.electronAPI.getAppVersion) {
+          const result = await window.electronAPI.getAppVersion();
+          if (result.success) {
+            appVersion = result.version;
+          }
+        }
+
+        // Populate about info
+        const repoUrl = 'https://github.com/busse/rss-util';
+        const licenseUrl = 'https://github.com/busse/rss-util/blob/main/LICENSE';
+        
+        aboutInfo.innerHTML = `
+          <div class="about-info-item">
+            <div class="about-info-label">App Name</div>
+            <div class="about-info-value">RSS Reader</div>
+          </div>
+          <div class="about-info-item">
+            <div class="about-info-label">Version</div>
+            <div class="about-info-value">${escapeHtml(appVersion)}</div>
+          </div>
+          <div class="about-info-item">
+            <div class="about-info-label">Repository</div>
+            <div class="about-info-value">
+              <a href="${escapeHtml(repoUrl)}" target="_blank" rel="noopener noreferrer">${escapeHtml(repoUrl)}</a>
+            </div>
+          </div>
+          <div class="about-info-item">
+            <div class="about-info-label">License</div>
+            <div class="about-info-value">
+              <a href="${escapeHtml(licenseUrl)}" target="_blank" rel="noopener noreferrer">MIT License</a>
+            </div>
+          </div>
+          <div class="about-info-item">
+            <div class="about-info-label">Description</div>
+            <div class="about-info-value">An RSS reader designed for maximum utility</div>
+          </div>
+        `;
+
+        aboutModal.classList.remove('hidden');
+      } catch (error) {
+        console.error('Error opening about modal:', error);
+      }
+    }
+
+    function closeAboutModal() {
+      aboutModal.classList.add('hidden');
+    }
+
+    // About modal event listeners
+    aboutBtn.addEventListener('click', () => {
+      openAboutModal();
+    });
+
+    closeAboutModalBtn.addEventListener('click', () => {
+      closeAboutModal();
+    });
+
+    closeAboutBtn.addEventListener('click', () => {
+      closeAboutModal();
+    });
+
+    // Close modal when clicking outside
+    aboutModal.addEventListener('click', (e) => {
+      if (e.target === aboutModal) {
+        closeAboutModal();
+      }
+    });
+
+    // Update Notification Management
+    const updateNotification = document.getElementById('updateNotification');
+    const updateNotificationText = document.getElementById('updateNotificationText');
+    const updateProgress = document.getElementById('updateProgress');
+    const updateProgressBar = document.getElementById('updateProgressBar');
+    const updateInstallBtn = document.getElementById('updateInstallBtn');
+    const updateCloseBtn = document.getElementById('updateCloseBtn');
+
+    function showUpdateNotification(message, type = 'info') {
+      updateNotificationText.textContent = message;
+      updateNotification.className = 'update-notification visible ' + type;
+      updateNotification.style.display = 'flex';
+    }
+
+    function hideUpdateNotification() {
+      updateNotification.classList.remove('visible');
+      updateNotification.style.display = 'none';
+    }
+
+    function showUpdateProgress(percent) {
+      updateProgress.style.display = 'block';
+      updateProgressBar.style.width = percent + '%';
+    }
+
+    function hideUpdateProgress() {
+      updateProgress.style.display = 'none';
+      updateProgressBar.style.width = '0%';
+    }
+
+    // Setup update event listeners
+    if (window.electronAPI) {
+      window.electronAPI.onUpdateStatus((data) => {
+        if (data.status === 'checking') {
+          showUpdateNotification('Checking for updates...', 'info');
+        } else if (data.status === 'not-available') {
+          // Don't show notification for "not available"
+          hideUpdateNotification();
+        }
+      });
+
+      window.electronAPI.onUpdateAvailable((data) => {
+        showUpdateNotification(`Update available: v${data.version}`, 'info');
+        updateInstallBtn.style.display = 'none';
+        hideUpdateProgress();
+      });
+
+      window.electronAPI.onUpdateDownloaded((data) => {
+        showUpdateNotification(`Update downloaded: v${data.version}. Click to install.`, 'downloading');
+        updateInstallBtn.style.display = 'block';
+        hideUpdateProgress();
+      });
+
+      window.electronAPI.onUpdateProgress((data) => {
+        showUpdateNotification(`Downloading update... ${Math.round(data.percent)}%`, 'downloading');
+        showUpdateProgress(data.percent);
+        updateInstallBtn.style.display = 'none';
+      });
+
+      window.electronAPI.onUpdateError((data) => {
+        showUpdateNotification(`Update error: ${data.message}`, 'error');
+        hideUpdateProgress();
+      });
+    }
+
+    // Update button handlers
+    updateInstallBtn.addEventListener('click', async () => {
+      if (window.electronAPI && window.electronAPI.installUpdate) {
+        try {
+          await window.electronAPI.installUpdate();
+        } catch (error) {
+          console.error('Error installing update:', error);
+          showUpdateNotification('Error installing update', 'error');
+        }
+      }
+    });
+
+    updateCloseBtn.addEventListener('click', () => {
+      hideUpdateNotification();
+    });
+
     // Initialize application
     async function init() {
       await Promise.all([loadFeeds(), loadCategories(), loadReadStates()]);
@@ -918,6 +1370,13 @@
     } else {
       init();
     }
+
+    // Cleanup listeners on page unload
+    window.addEventListener('beforeunload', () => {
+      if (window.electronAPI && window.electronAPI.removeUpdateListeners) {
+        window.electronAPI.removeUpdateListeners();
+      }
+    });
   </script>
 </body>
 
