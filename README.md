@@ -30,7 +30,7 @@ A simple desktop RSS reader application for Mac built with Electron. The applica
 ### Step 1: Clone the Repository
 
 ```bash
-git clone https://github.com/yourusername/rss-util.git
+git clone https://github.com/busse/rss-util.git
 cd rss-util
 ```
 
