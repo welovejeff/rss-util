@@ -82,19 +82,29 @@ async function runMigrations(dataDir, currentVersion, storedVersion) {
     
     // Find migrations that need to run
     const migrationsToRun = availableMigrations.filter(m => {
-      const fromCompare = compareVersions(m.fromVersion, storedVersion);
-      const toCompare = compareVersions(m.toVersion, currentVersion);
-      
       // Migration should run if:
-      // - fromVersion >= storedVersion (migration starts from or after stored version)
-      // - toVersion <= currentVersion (migration ends at or before current version)
-      return fromCompare >= 0 && toCompare <= 0;
+      // 1. storedVersion >= fromVersion (we're at or past the source version)
+      // 2. storedVersion < toVersion (we haven't reached the target version yet)
+      // 3. toVersion <= currentVersion (migration target is within our upgrade path)
+      const storedFromCompare = compareVersions(storedVersion, m.fromVersion);
+      const storedToCompare = compareVersions(storedVersion, m.toVersion);
+      const toCurrentCompare = compareVersions(m.toVersion, currentVersion);
+      
+      return storedFromCompare >= 0 && storedToCompare < 0 && toCurrentCompare <= 0;
     });
     
     if (migrationsToRun.length === 0) {
       console.log('No migrations found for this version range');
-      // Update stored version to current
-      await updateStoredVersion(dataDir, currentVersion);
+      // Only update stored version if we're already at or past current version
+      // Otherwise, we might be missing migrations and shouldn't update
+      const storedCurrentCompare = compareVersions(storedVersion, currentVersion);
+      if (storedCurrentCompare >= 0) {
+        // Stored version is at or newer than current, safe to update
+        await updateStoredVersion(dataDir, currentVersion);
+      } else {
+        // Stored version is older but no migrations found - this might indicate missing migrations
+        console.warn(`No migrations found to upgrade from ${storedVersion} to ${currentVersion}. Data version not updated.`);
+      }
       return true;
     }
     
