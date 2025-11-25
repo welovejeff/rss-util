@@ -519,26 +519,7 @@
         <button class="add-folder-btn" id="addFolderBtn" title="Add Category">+</button>
       </div>
       <ul class="folder-list" id="folderList">
-        <li class="folder-item active" data-folder="all">
-          <span class="folder-icon">📚</span>
-          <span class="folder-name">All Feeds</span>
-          <span class="folder-count" id="allFeedsCount">4</span>
-        </li>
-        <li class="folder-item" data-folder="uncategorized">
-          <span class="folder-icon">📄</span>
-          <span class="folder-name">Uncategorized</span>
-          <span class="folder-count">1</span>
-        </li>
-        <li class="folder-item" data-folder="technology">
-          <span class="folder-icon">💻</span>
-          <span class="folder-name">Technology</span>
-          <span class="folder-count">2</span>
-        </li>
-        <li class="folder-item" data-folder="science">
-          <span class="folder-icon">🔬</span>
-          <span class="folder-name">Science</span>
-          <span class="folder-count">1</span>
-        </li>
+        <!-- Categories will be dynamically rendered here -->
       </ul>
     </aside>
 
@@ -557,93 +538,7 @@
       </div>
 
       <div class="feed-list-container" id="feedListContainer">
-        <!-- Feed Card 1 -->
-        <div class="feed-card" data-feed-id="1">
-          <span class="drag-handle">⋮⋮</span>
-          <div class="feed-card-icon" style="background-color: #3498db;">T</div>
-          <div class="feed-card-content">
-            <div class="feed-card-title">Tech News Daily</div>
-            <div class="feed-card-url">https://technews.example.com/feed</div>
-            <div class="feed-card-meta">
-              <span class="feed-status">
-                <span class="status-indicator status-healthy"></span>
-                Healthy
-              </span>
-              <span>Last updated: 2 hours ago</span>
-              <span class="category-badge">Technology</span>
-            </div>
-          </div>
-          <div class="feed-card-actions">
-            <button class="icon-btn" title="Edit Feed">✏️</button>
-            <button class="icon-btn danger" title="Delete Feed">🗑️</button>
-          </div>
-        </div>
-
-        <!-- Feed Card 2 -->
-        <div class="feed-card" data-feed-id="2">
-          <span class="drag-handle">⋮⋮</span>
-          <div class="feed-card-icon" style="background-color: #2ecc71;">S</div>
-          <div class="feed-card-content">
-            <div class="feed-card-title">Science Daily</div>
-            <div class="feed-card-url">https://sciencedaily.example.com/rss</div>
-            <div class="feed-card-meta">
-              <span class="feed-status">
-                <span class="status-indicator status-healthy"></span>
-                Healthy
-              </span>
-              <span>Last updated: 4 hours ago</span>
-              <span class="category-badge">Science</span>
-            </div>
-          </div>
-          <div class="feed-card-actions">
-            <button class="icon-btn" title="Edit Feed">✏️</button>
-            <button class="icon-btn danger" title="Delete Feed">🗑️</button>
-          </div>
-        </div>
-
-        <!-- Feed Card 3 -->
-        <div class="feed-card" data-feed-id="3">
-          <span class="drag-handle">⋮⋮</span>
-          <div class="feed-card-icon" style="background-color: #9b59b6;">D</div>
-          <div class="feed-card-content">
-            <div class="feed-card-title">Design Weekly</div>
-            <div class="feed-card-url">https://designweekly.example.com/feed.xml</div>
-            <div class="feed-card-meta">
-              <span class="feed-status">
-                <span class="status-indicator status-warning"></span>
-                Slow response
-              </span>
-              <span>Last updated: 1 day ago</span>
-              <span class="category-badge">Technology</span>
-            </div>
-          </div>
-          <div class="feed-card-actions">
-            <button class="icon-btn" title="Edit Feed">✏️</button>
-            <button class="icon-btn danger" title="Delete Feed">🗑️</button>
-          </div>
-        </div>
-
-        <!-- Feed Card 4 - Error state -->
-        <div class="feed-card" data-feed-id="4">
-          <span class="drag-handle">⋮⋮</span>
-          <div class="feed-card-icon" style="background-color: #e74c3c;">!</div>
-          <div class="feed-card-content">
-            <div class="feed-card-title">Broken Feed Example</div>
-            <div class="feed-card-url">https://broken.example.com/rss</div>
-            <div class="feed-card-meta">
-              <span class="feed-status">
-                <span class="status-indicator status-error"></span>
-                Connection failed
-              </span>
-              <span>Last attempt: 3 days ago</span>
-              <span class="category-badge">Uncategorized</span>
-            </div>
-          </div>
-          <div class="feed-card-actions">
-            <button class="icon-btn" title="Edit Feed">✏️</button>
-            <button class="icon-btn danger" title="Delete Feed">🗑️</button>
-          </div>
-        </div>
+        <!-- Feeds will be dynamically rendered here -->
       </div>
 
       <!-- Import/Export Section -->
@@ -683,9 +578,7 @@
           <label class="form-label" for="feedCategory">Category</label>
           <select class="form-select" id="feedCategory">
             <option value="">Uncategorized</option>
-            <option value="technology">Technology</option>
-            <option value="science">Science</option>
-            <option value="entertainment">Entertainment</option>
+            <!-- Categories will be dynamically populated -->
           </select>
         </div>
       </div>
@@ -731,6 +624,13 @@
   </div>
 
   <script>
+    // Application State
+    let feeds = [];
+    let categories = [];
+    let selectedCategoryId = 'all';
+    let editingFeedId = null;
+    let editingCategoryId = null;
+
     // DOM Elements
     const backToReaderBtn = document.getElementById('backToReader');
     const addFeedBtn = document.getElementById('addFeedBtn');
@@ -750,26 +650,469 @@
     const importOpmlBtn = document.getElementById('importOpmlBtn');
     const exportOpmlBtn = document.getElementById('exportOpmlBtn');
 
+    // Helper Functions
+    function generateUUID() {
+      return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+        const r = Math.random() * 16 | 0;
+        const v = c === 'x' ? r : (r & 0x3 | 0x8);
+        return v.toString(16);
+      });
+    }
+
+    function formatRelativeTime(timestamp) {
+      if (!timestamp) return 'Never';
+      
+      try {
+        const date = new Date(timestamp);
+        const now = new Date();
+        const diffMs = now - date;
+        const diffMins = Math.floor(diffMs / 60000);
+        const diffHours = Math.floor(diffMs / 3600000);
+        const diffDays = Math.floor(diffMs / 86400000);
+
+        if (diffMins < 1) return 'Just now';
+        if (diffMins < 60) return `${diffMins} minute${diffMins !== 1 ? 's' : ''} ago`;
+        if (diffHours < 24) return `${diffHours} hour${diffHours !== 1 ? 's' : ''} ago`;
+        if (diffDays < 7) return `${diffDays} day${diffDays !== 1 ? 's' : ''} ago`;
+        
+        return date.toLocaleDateString();
+      } catch (e) {
+        return 'Unknown';
+      }
+    }
+
+    function getFeedIcon(feed) {
+      if (feed.icon) return feed.icon;
+      if (feed.title) return feed.title.charAt(0).toUpperCase();
+      return '📰';
+    }
+
+    function getFeedIconColor(feed) {
+      const colors = ['#3498db', '#2ecc71', '#9b59b6', '#e74c3c', '#f39c12', '#1abc9c', '#34495e'];
+      const hash = feed.id ? feed.id.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0) : 0;
+      return colors[hash % colors.length];
+    }
+
+    function getFeedCountByCategory(categoryId, feeds) {
+      if (categoryId === 'all') return feeds.length;
+      if (categoryId === 'uncategorized') {
+        return feeds.filter(f => !f.category || f.category === '').length;
+      }
+      return feeds.filter(f => f.category === categoryId).length;
+    }
+
+    function getCategoryById(categoryId) {
+      return categories.find(c => c.id === categoryId);
+    }
+
+    function getCategoryName(categoryId) {
+      if (categoryId === 'all') return 'All Feeds';
+      if (categoryId === 'uncategorized') return 'Uncategorized';
+      const category = getCategoryById(categoryId);
+      return category ? category.name : 'Unknown';
+    }
+
+    // Data Loading Functions
+    async function loadFeeds() {
+      try {
+        if (window.electronAPI && window.electronAPI.readFeeds) {
+          const result = await window.electronAPI.readFeeds();
+          if (result.success) {
+            feeds = result.data || [];
+            renderFeeds();
+          } else {
+            console.error('Error loading feeds:', result.error);
+            alert('Failed to load feeds: ' + result.error);
+          }
+        } else {
+          console.warn('electronAPI not available, using empty feeds');
+          feeds = [];
+          renderFeeds();
+        }
+      } catch (error) {
+        console.error('Error loading feeds:', error);
+        feeds = [];
+        renderFeeds();
+      }
+    }
+
+    async function loadCategories() {
+      try {
+        if (window.electronAPI && window.electronAPI.readCategories) {
+          const result = await window.electronAPI.readCategories();
+          if (result.success) {
+            categories = result.data || [];
+            renderCategories();
+            updateCategoryDropdown();
+          } else {
+            console.error('Error loading categories:', result.error);
+            alert('Failed to load categories: ' + result.error);
+          }
+        } else {
+          console.warn('electronAPI not available, using empty categories');
+          categories = [];
+          renderCategories();
+          updateCategoryDropdown();
+        }
+      } catch (error) {
+        console.error('Error loading categories:', error);
+        categories = [];
+        renderCategories();
+        updateCategoryDropdown();
+      }
+    }
+
+    async function saveFeeds() {
+      try {
+        if (window.electronAPI && window.electronAPI.writeFeeds) {
+          const result = await window.electronAPI.writeFeeds(feeds);
+          if (!result.success) {
+            console.error('Error saving feeds:', result.error);
+            alert('Failed to save feeds: ' + result.error);
+            return false;
+          }
+          return true;
+        } else {
+          console.warn('electronAPI not available, cannot save feeds');
+          return false;
+        }
+      } catch (error) {
+        console.error('Error saving feeds:', error);
+        alert('Failed to save feeds: ' + error.message);
+        return false;
+      }
+    }
+
+    async function saveCategories() {
+      try {
+        if (window.electronAPI && window.electronAPI.writeCategories) {
+          const result = await window.electronAPI.writeCategories(categories);
+          if (!result.success) {
+            console.error('Error saving categories:', result.error);
+            alert('Failed to save categories: ' + result.error);
+            return false;
+          }
+          return true;
+        } else {
+          console.warn('electronAPI not available, cannot save categories');
+          return false;
+        }
+      } catch (error) {
+        console.error('Error saving categories:', error);
+        alert('Failed to save categories: ' + error.message);
+        return false;
+      }
+    }
+
+    // Rendering Functions
+    function renderFeeds() {
+      const filteredFeeds = getFilteredFeeds();
+      
+      if (filteredFeeds.length === 0) {
+        feedListContainer.innerHTML = `
+          <div class="empty-state">
+            <div class="empty-state-icon">📭</div>
+            <div class="empty-state-title">No Feeds</div>
+            <div class="empty-state-text">${selectedCategoryId === 'all' ? 'Add your first feed to get started' : 'No feeds in this category'}</div>
+          </div>
+        `;
+        return;
+      }
+
+      feedListContainer.innerHTML = filteredFeeds.map(feed => {
+        const category = feed.category ? getCategoryById(feed.category) : null;
+        const status = feed.status || 'healthy';
+        const statusClass = `status-${status}`;
+        const statusText = status === 'healthy' ? 'Healthy' : status === 'warning' ? 'Slow response' : 'Connection failed';
+        const icon = getFeedIcon(feed);
+        const iconColor = getFeedIconColor(feed);
+        const lastUpdated = formatRelativeTime(feed.lastUpdated);
+
+        return `
+          <div class="feed-card" data-feed-id="${feed.id}">
+            <span class="drag-handle">⋮⋮</span>
+            <div class="feed-card-icon" style="background-color: ${iconColor};">${icon}</div>
+            <div class="feed-card-content">
+              <div class="feed-card-title">${escapeHtml(feed.title || 'Untitled Feed')}</div>
+              <div class="feed-card-url">${escapeHtml(feed.url)}</div>
+              <div class="feed-card-meta">
+                <span class="feed-status">
+                  <span class="status-indicator ${statusClass}"></span>
+                  ${statusText}
+                </span>
+                <span>Last updated: ${lastUpdated}</span>
+                ${category ? `<span class="category-badge">${escapeHtml(category.name)}</span>` : ''}
+              </div>
+            </div>
+            <div class="feed-card-actions">
+              <button class="icon-btn" title="Edit Feed" data-action="edit">✏️</button>
+              <button class="icon-btn danger" title="Delete Feed" data-action="delete">🗑️</button>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function renderCategories() {
+      const allCount = getFeedCountByCategory('all', feeds);
+      const uncategorizedCount = getFeedCountByCategory('uncategorized', feeds);
+
+      let html = `
+        <li class="folder-item ${selectedCategoryId === 'all' ? 'active' : ''}" data-folder="all">
+          <span class="folder-icon">📚</span>
+          <span class="folder-name">All Feeds</span>
+          <span class="folder-count">${allCount}</span>
+        </li>
+        <li class="folder-item ${selectedCategoryId === 'uncategorized' ? 'active' : ''}" data-folder="uncategorized">
+          <span class="folder-icon">📄</span>
+          <span class="folder-name">Uncategorized</span>
+          <span class="folder-count">${uncategorizedCount}</span>
+        </li>
+      `;
+
+      categories.forEach(category => {
+        const count = getFeedCountByCategory(category.id, feeds);
+        const isActive = selectedCategoryId === category.id;
+        html += `
+          <li class="folder-item ${isActive ? 'active' : ''}" data-folder="${category.id}">
+            <span class="folder-icon">${category.icon || '📁'}</span>
+            <span class="folder-name">${escapeHtml(category.name)}</span>
+            <span class="folder-count">${count}</span>
+          </li>
+        `;
+      });
+
+      folderList.innerHTML = html;
+      panelTitle.textContent = getCategoryName(selectedCategoryId);
+    }
+
+    function getFilteredFeeds() {
+      if (selectedCategoryId === 'all') return feeds;
+      if (selectedCategoryId === 'uncategorized') {
+        return feeds.filter(f => !f.category || f.category === '');
+      }
+      return feeds.filter(f => f.category === selectedCategoryId);
+    }
+
+    function updateCategoryDropdown() {
+      const feedCategorySelect = document.getElementById('feedCategory');
+      if (!feedCategorySelect) return;
+
+      feedCategorySelect.innerHTML = '<option value="">Uncategorized</option>';
+      categories.forEach(category => {
+        const option = document.createElement('option');
+        option.value = category.id;
+        option.textContent = category.name;
+        feedCategorySelect.appendChild(option);
+      });
+    }
+
+    function escapeHtml(text) {
+      const div = document.createElement('div');
+      div.textContent = text;
+      return div.innerHTML;
+    }
+
+    // Feed CRUD Operations
+    async function createFeed(feedData) {
+      const newFeed = {
+        id: `feed-${generateUUID()}`,
+        title: feedData.title || '',
+        url: feedData.url,
+        category: feedData.category || '',
+        icon: feedData.icon || '',
+        status: 'healthy',
+        lastUpdated: null
+      };
+
+      feeds.push(newFeed);
+      const saved = await saveFeeds();
+      if (saved) {
+        renderFeeds();
+        renderCategories();
+      }
+      return saved;
+    }
+
+    async function updateFeed(feedId, feedData) {
+      const feedIndex = feeds.findIndex(f => f.id === feedId);
+      if (feedIndex === -1) {
+        console.error('Feed not found:', feedId);
+        return false;
+      }
+
+      feeds[feedIndex] = {
+        ...feeds[feedIndex],
+        title: feedData.title || feeds[feedIndex].title,
+        url: feedData.url || feeds[feedIndex].url,
+        category: feedData.category !== undefined ? feedData.category : feeds[feedIndex].category,
+        icon: feedData.icon !== undefined ? feedData.icon : feeds[feedIndex].icon
+      };
+
+      const saved = await saveFeeds();
+      if (saved) {
+        renderFeeds();
+        renderCategories();
+      }
+      return saved;
+    }
+
+    async function deleteFeed(feedId) {
+      feeds = feeds.filter(f => f.id !== feedId);
+      const saved = await saveFeeds();
+      if (saved) {
+        renderFeeds();
+        renderCategories();
+      }
+      return saved;
+    }
+
+    // Category CRUD Operations
+    async function createCategory(categoryData) {
+      const newCategory = {
+        id: `category-${generateUUID()}`,
+        name: categoryData.name,
+        icon: categoryData.icon || '📁'
+      };
+
+      categories.push(newCategory);
+      const saved = await saveCategories();
+      if (saved) {
+        renderCategories();
+        updateCategoryDropdown();
+      }
+      return saved;
+    }
+
+    async function updateCategory(categoryId, categoryData) {
+      const categoryIndex = categories.findIndex(c => c.id === categoryId);
+      if (categoryIndex === -1) {
+        console.error('Category not found:', categoryId);
+        return false;
+      }
+
+      const oldCategoryId = categories[categoryIndex].id;
+      categories[categoryIndex] = {
+        ...categories[categoryIndex],
+        name: categoryData.name || categories[categoryIndex].name,
+        icon: categoryData.icon !== undefined ? categoryData.icon : categories[categoryIndex].icon
+      };
+
+      // If category ID changed, update all feeds referencing it
+      if (oldCategoryId !== categoryId) {
+        feeds.forEach(feed => {
+          if (feed.category === oldCategoryId) {
+            feed.category = categoryId;
+          }
+        });
+        await saveFeeds();
+      }
+
+      const saved = await saveCategories();
+      if (saved) {
+        renderFeeds();
+        renderCategories();
+        updateCategoryDropdown();
+      }
+      return saved;
+    }
+
+    async function deleteCategory(categoryId) {
+      // Move feeds in this category to uncategorized
+      feeds.forEach(feed => {
+        if (feed.category === categoryId) {
+          feed.category = '';
+        }
+      });
+      await saveFeeds();
+
+      categories = categories.filter(c => c.id !== categoryId);
+      const saved = await saveCategories();
+      if (saved) {
+        if (selectedCategoryId === categoryId) {
+          selectedCategoryId = 'all';
+        }
+        renderFeeds();
+        renderCategories();
+        updateCategoryDropdown();
+      }
+      return saved;
+    }
+
+    // Modal Management
+    function openAddFeedModal() {
+      editingFeedId = null;
+      document.getElementById('feedUrl').value = '';
+      document.getElementById('feedName').value = '';
+      document.getElementById('feedCategory').value = '';
+      const modalTitle = addFeedModal.querySelector('.modal-title');
+      if (modalTitle) modalTitle.textContent = 'Add New Feed';
+      const confirmBtn = document.getElementById('confirmAddFeed');
+      if (confirmBtn) confirmBtn.textContent = 'Add Feed';
+      addFeedModal.classList.remove('hidden');
+    }
+
+    function openEditFeedModal(feedId) {
+      const feed = feeds.find(f => f.id === feedId);
+      if (!feed) return;
+
+      editingFeedId = feedId;
+      document.getElementById('feedUrl').value = feed.url || '';
+      document.getElementById('feedName').value = feed.title || '';
+      document.getElementById('feedCategory').value = feed.category || '';
+      const modalTitle = addFeedModal.querySelector('.modal-title');
+      if (modalTitle) modalTitle.textContent = 'Edit Feed';
+      const confirmBtn = document.getElementById('confirmAddFeed');
+      if (confirmBtn) confirmBtn.textContent = 'Update Feed';
+      addFeedModal.classList.remove('hidden');
+    }
+
+    function openAddCategoryModal() {
+      editingCategoryId = null;
+      document.getElementById('categoryName').value = '';
+      document.getElementById('categoryIcon').selectedIndex = 0;
+      const modalTitle = addCategoryModal.querySelector('.modal-title');
+      if (modalTitle) modalTitle.textContent = 'Add New Category';
+      const confirmBtn = document.getElementById('confirmAddCategory');
+      if (confirmBtn) confirmBtn.textContent = 'Add Category';
+      addCategoryModal.classList.remove('hidden');
+    }
+
+    function openEditCategoryModal(categoryId) {
+      const category = categories.find(c => c.id === categoryId);
+      if (!category) return;
+
+      editingCategoryId = categoryId;
+      document.getElementById('categoryName').value = category.name || '';
+      const iconSelect = document.getElementById('categoryIcon');
+      const iconOptions = Array.from(iconSelect.options);
+      const iconIndex = iconOptions.findIndex(opt => opt.value === category.icon);
+      if (iconIndex !== -1) {
+        iconSelect.selectedIndex = iconIndex;
+      }
+      const modalTitle = addCategoryModal.querySelector('.modal-title');
+      if (modalTitle) modalTitle.textContent = 'Edit Category';
+      const confirmBtn = document.getElementById('confirmAddCategory');
+      if (confirmBtn) confirmBtn.textContent = 'Update Category';
+      addCategoryModal.classList.remove('hidden');
+    }
+
     // Navigation
     backToReaderBtn.addEventListener('click', async () => {
-      console.log('Back button clicked');
       if (window.electronAPI && window.electronAPI.navigateTo) {
         try {
           await window.electronAPI.navigateTo('index.html');
-          console.log('Navigation successful');
         } catch (error) {
           console.error('Navigation error:', error);
         }
       } else {
-        console.log('Using fallback navigation');
-        // Fallback for testing in browser
         window.location.href = 'index.html';
       }
     });
 
-    // Add Feed Modal
+    // Event Handlers
     addFeedBtn.addEventListener('click', () => {
-      addFeedModal.classList.remove('hidden');
+      openAddFeedModal();
     });
 
     closeAddFeedModalBtn.addEventListener('click', () => {
@@ -780,33 +1123,49 @@
       addFeedModal.classList.add('hidden');
     });
 
-    confirmAddFeedBtn.addEventListener('click', () => {
+    confirmAddFeedBtn.addEventListener('click', async () => {
       const feedUrl = document.getElementById('feedUrl').value.trim();
-      const feedName = document.getElementById('feedName').value;
+      const feedName = document.getElementById('feedName').value.trim();
       const feedCategory = document.getElementById('feedCategory').value;
       
-      if (feedUrl) {
-        // Validate URL format
-        try {
-          new URL(feedUrl);
-        } catch (e) {
-          alert('Please enter a valid URL (e.g., https://example.com/feed.xml)');
-          return;
+      if (!feedUrl) {
+        alert('Please enter a feed URL');
+        return;
+      }
+
+      // Validate URL format
+      try {
+        new URL(feedUrl);
+      } catch (e) {
+        alert('Please enter a valid URL (e.g., https://example.com/feed.xml)');
+        return;
+      }
+
+      if (editingFeedId) {
+        // Update existing feed
+        const success = await updateFeed(editingFeedId, {
+          url: feedUrl,
+          title: feedName,
+          category: feedCategory
+        });
+        if (success) {
+          addFeedModal.classList.add('hidden');
         }
-        
-        // In a real implementation, this would add the feed to storage
-        console.log('Adding feed:', { feedUrl, feedName, feedCategory });
-        addFeedModal.classList.add('hidden');
-        // Reset form
-        document.getElementById('feedUrl').value = '';
-        document.getElementById('feedName').value = '';
-        document.getElementById('feedCategory').value = '';
+      } else {
+        // Create new feed
+        const success = await createFeed({
+          url: feedUrl,
+          title: feedName,
+          category: feedCategory
+        });
+        if (success) {
+          addFeedModal.classList.add('hidden');
+        }
       }
     });
 
-    // Add Category Modal
     addFolderBtn.addEventListener('click', () => {
-      addCategoryModal.classList.remove('hidden');
+      openAddCategoryModal();
     });
 
     closeAddCategoryModalBtn.addEventListener('click', () => {
@@ -817,72 +1176,108 @@
       addCategoryModal.classList.add('hidden');
     });
 
-    confirmAddCategoryBtn.addEventListener('click', () => {
-      const categoryName = document.getElementById('categoryName').value;
+    confirmAddCategoryBtn.addEventListener('click', async () => {
+      const categoryName = document.getElementById('categoryName').value.trim();
       const categoryIcon = document.getElementById('categoryIcon').value;
       
-      if (categoryName) {
-        // In a real implementation, this would add the category to storage
-        console.log('Adding category:', { categoryName, categoryIcon });
-        addCategoryModal.classList.add('hidden');
-        // Reset form
-        document.getElementById('categoryName').value = '';
-        document.getElementById('categoryIcon').selectedIndex = 0;
+      if (!categoryName) {
+        alert('Please enter a category name');
+        return;
       }
-    });
 
-    // Folder selection
-    folderList.addEventListener('click', (e) => {
-      const folderItem = e.target.closest('.folder-item');
-      if (folderItem) {
-        // Remove active class from all items
-        document.querySelectorAll('.folder-item').forEach(item => {
-          item.classList.remove('active');
+      if (editingCategoryId) {
+        // Update existing category
+        const success = await updateCategory(editingCategoryId, {
+          name: categoryName,
+          icon: categoryIcon
         });
-        // Add active class to clicked item
-        folderItem.classList.add('active');
-        // Update panel title
-        const folderName = folderItem.querySelector('.folder-name').textContent;
-        panelTitle.textContent = folderName;
-      }
-    });
-
-    // Feed card actions
-    feedListContainer.addEventListener('click', (e) => {
-      const editBtn = e.target.closest('.icon-btn:not(.danger)');
-      const deleteBtn = e.target.closest('.icon-btn.danger');
-      const feedCard = e.target.closest('.feed-card');
-      
-      if (editBtn && feedCard) {
-        const feedId = feedCard.dataset.feedId;
-        console.log('Edit feed:', feedId);
-        // Open edit modal (to be implemented)
-      }
-      
-      if (deleteBtn && feedCard) {
-        const feedId = feedCard.dataset.feedId;
-        if (confirm('Are you sure you want to delete this feed?')) {
-          console.log('Delete feed:', feedId);
-          feedCard.remove();
+        if (success) {
+          addCategoryModal.classList.add('hidden');
+        }
+      } else {
+        // Create new category
+        const success = await createCategory({
+          name: categoryName,
+          icon: categoryIcon
+        });
+        if (success) {
+          addCategoryModal.classList.add('hidden');
         }
       }
     });
 
-    // Refresh all feeds
-    refreshAllBtn.addEventListener('click', () => {
-      console.log('Refreshing all feeds...');
-      // In a real implementation, this would refresh all feeds
+    // Folder/Category selection
+    folderList.addEventListener('click', (e) => {
+      const folderItem = e.target.closest('.folder-item');
+      if (folderItem) {
+        const folderId = folderItem.dataset.folder;
+        if (folderId) {
+          selectedCategoryId = folderId;
+          renderCategories();
+          renderFeeds();
+        }
+      }
     });
 
-    // Import/Export OPML
+    // Feed card actions
+    feedListContainer.addEventListener('click', async (e) => {
+      const feedCard = e.target.closest('.feed-card');
+      if (!feedCard) return;
+
+      const feedId = feedCard.dataset.feedId;
+      const action = e.target.closest('[data-action]')?.dataset.action;
+
+      if (action === 'edit') {
+        openEditFeedModal(feedId);
+      } else if (action === 'delete') {
+        if (confirm('Are you sure you want to delete this feed?')) {
+          await deleteFeed(feedId);
+        }
+      }
+    });
+
+    // Category item actions - double-click to edit, right-click for context menu
+    folderList.addEventListener('dblclick', (e) => {
+      const folderItem = e.target.closest('.folder-item');
+      if (!folderItem) return;
+
+      const folderId = folderItem.dataset.folder;
+      if (folderId === 'all' || folderId === 'uncategorized') return;
+
+      const category = categories.find(c => c.id === folderId);
+      if (category) {
+        openEditCategoryModal(folderId);
+      }
+    });
+
+    folderList.addEventListener('contextmenu', (e) => {
+      e.preventDefault();
+      const folderItem = e.target.closest('.folder-item');
+      if (!folderItem) return;
+
+      const folderId = folderItem.dataset.folder;
+      if (folderId === 'all' || folderId === 'uncategorized') return;
+
+      const category = categories.find(c => c.id === folderId);
+      if (!category) return;
+
+      if (confirm(`Delete category "${category.name}"?\n\nFeeds in this category will be moved to Uncategorized.`)) {
+        deleteCategory(folderId);
+      }
+    });
+
+    // Refresh all feeds (placeholder - will be implemented when RSS retrieval is added)
+    refreshAllBtn.addEventListener('click', () => {
+      alert('Feed refresh functionality will be implemented when RSS retrieval is added.');
+    });
+
+    // Import/Export OPML (placeholder)
     importOpmlBtn.addEventListener('click', () => {
-      console.log('Import OPML clicked');
-      // In a real implementation, this would open a file picker
+      alert('OPML import functionality will be implemented in a future update.');
     });
 
     exportOpmlBtn.addEventListener('click', () => {
-      console.log('Export OPML clicked');
-      // In a real implementation, this would save an OPML file
+      alert('OPML export functionality will be implemented in a future update.');
     });
 
     // Close modals when clicking outside
@@ -905,6 +1300,18 @@
         addCategoryModal.classList.add('hidden');
       }
     });
+
+    // Initialize application
+    async function init() {
+      await Promise.all([loadFeeds(), loadCategories()]);
+    }
+
+    // Start application when DOM is ready
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', init);
+    } else {
+      init();
+    }
   </script>
 </body>
 </html>
