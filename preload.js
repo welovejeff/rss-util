@@ -7,5 +7,27 @@ const { contextBridge, ipcRenderer } = require('electron');
 // with the main process securely. Add IPC channels here as needed.
 contextBridge.exposeInMainWorld('electronAPI', {
   // Navigate to a different HTML file
-  navigateTo: (file) => ipcRenderer.invoke('navigate-to', file)
+  navigateTo: (file) => ipcRenderer.invoke('navigate-to', file),
+  
+  // File operations - all return promises with {success: boolean, data?: any, error?: string}
+  
+  // Generic JSON operations
+  readJSON: (filename) => ipcRenderer.invoke('read-json', filename),
+  writeJSON: (filename, data) => ipcRenderer.invoke('write-json', filename, data),
+  
+  // Feeds operations
+  readFeeds: () => ipcRenderer.invoke('read-feeds'),
+  writeFeeds: (feeds) => ipcRenderer.invoke('write-feeds', feeds),
+  
+  // Categories operations
+  readCategories: () => ipcRenderer.invoke('read-categories'),
+  writeCategories: (categories) => ipcRenderer.invoke('write-categories', categories),
+  
+  // Read states operations
+  readReadStates: () => ipcRenderer.invoke('read-read-states'),
+  writeReadStates: (readStates) => ipcRenderer.invoke('write-read-states', readStates),
+  
+  // Settings operations
+  readSettings: () => ipcRenderer.invoke('read-settings'),
+  writeSettings: (settings) => ipcRenderer.invoke('write-settings', settings)
 });
